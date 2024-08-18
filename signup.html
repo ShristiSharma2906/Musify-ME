@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up page</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="signup">
+        <h2>Sign Up</h2>
+        <br>
+        <form id="signupForm">
+            <label for="First Name">First Name:</label>
+            <input type="text" id="firstName" name=" first name" placeholder="Enter your first name">
+            <br>
+            <br>
+            <label for="Last Name">Last Name:</label>
+            <input type="text" id="lastName" name=" last name" placeholder="Enter your last name">
+            <br>
+            <br>
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="" disabled selected>Select your gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+                <option value="prefer-not-to-say">Prefer not to say</option>
+            </select>
+            <br>
+            <br>
+            <label for="signupEmail">Email:</label>
+            <input type="email" id="signupEmail" name="email" placeholder="enter your email" required>
+            <br>
+            <br>
+            
+            <label for="signupPassword">Password:</label>
+            <input type="password" id="signupPassword" name="password" placeholder="enter your password" required>
+            <br>
+            <br>
+            
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script src="js/credential.js"></script>
+    
+</body>
+</html>
