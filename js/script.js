@@ -1,5 +1,5 @@
 let currentSong = new Audio();
-let songs;
+let songs = [];
 let currFolder;
 
 function secondsToMinutesSeconds(seconds) {
@@ -107,6 +107,34 @@ async function displayAlbums() {
     });
 }
 
+function normalizeString(str) {
+    // Convert to lowercase
+    let normalized = str.toLowerCase();
+    // Remove special characters and extra spaces
+    normalized = normalized.replace(/[\W_]+/g, ' ').trim();
+    return normalized;
+}
+
+function searchSong(query) {
+    // Normalize the search query
+    const normalizedQuery = normalizeString(query);
+
+    // Find the song in the playlist that matches the search query
+    const foundSong = songs.find(song => {
+        // Normalize the song name
+        const normalizedSong = normalizeString(song);
+        return normalizedSong.includes(normalizedQuery);
+    });
+
+    if (foundSong) {
+        // Play the found song
+        playMusic(foundSong);
+    } else {
+        // Display an alert if the song is not found
+        alert('Song not found in the playlist.');
+    }
+}
+
 async function main() {
     // Get the list of all songs
     await getSongs("songs/ncs");
@@ -188,6 +216,17 @@ async function main() {
             currentSong.volume = 0.10;
             document.querySelector(".range").getElementsByTagName("input")[0].value = 10;
         }
+    });
+
+    // Add event listener for search input
+    document.querySelector(".search").addEventListener("input", (e) => {
+        const query = e.target.value.trim();
+        searchSong(query);
+    });
+
+    // Add event listener for search option in the sidebar
+    document.getElementById("searchOption").addEventListener("click", () => {
+        document.querySelector(".search").focus();
     });
 }
 
