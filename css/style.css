@@ -90,7 +90,10 @@ body {
 .header > * {
     padding: 20px;
 }
-
+.search{
+    width: 30vh;
+    height: 3vh;
+}
 .MusifyMePlaylists {
     padding: 16px;
 }
@@ -167,7 +170,18 @@ body {
     font-size: 17px;
     color: #BB9AB1;
 }
-
+.signup{
+    border: 2px solid white;
+    background-color:#987D9A;
+    color: white;
+    padding-bottom: 10vh;
+    padding-left: 10vh;
+    padding-top: 10vh;
+    padding-right: 10vh;
+    width: 50%;
+    height: 75vh;
+    width: 50vh;
+}
 .loginBtn {
     background-color: white;
     border-radius: 21px;
@@ -181,6 +195,18 @@ body {
 .loginBtn:hover {
     font-weight: bold;
     font-size: 17px;
+}
+.login{
+    border: 2px solid white;
+    background-color:#987D9A;
+    color: white;
+    padding-bottom: 10vh;
+    padding-left: 10vh;
+    padding-top: 10vh;
+    padding-right: 10vh;
+    width: 50%;
+    height: 75vh;
+    width: 50vh;
 }
 
 .playbar {
@@ -434,5 +460,20 @@ body {
 
     .left {
         width: 100vw;
+    }
+}
+@media (min-width: 450px) and (max-width:600px){
+    .search{
+        width: 15vh;
+    }
+}
+@media (min-width: 600px) and (max-width:700px){
+    .search{
+        width: 20vh;
+    }
+}
+@media (min-width: 300px) and (max-width:450px){
+    .search{
+        width: 8vh;
     }
 }
