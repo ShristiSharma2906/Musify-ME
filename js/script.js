@@ -1,7 +1,9 @@
 let currentSong = new Audio();
 let songs = [];
-let currFolder;
+let currFolder = "songs/ncs"; // Default folder, adjust as needed
+let blobUrls = {}; // Store blob URLs for added songs
 
+// Function to convert seconds to minutes and seconds
 function secondsToMinutesSeconds(seconds) {
     if (isNaN(seconds) || seconds < 0) {
         return "00:00";
@@ -15,6 +17,7 @@ function secondsToMinutesSeconds(seconds) {
     return `${formattedMinutes}:${formattedSeconds}`;
 }
 
+// Function to fetch and display songs from a folder
 async function getSongs(folder) {
     currFolder = folder;
     let response = await fetch(`/${folder}/`);
@@ -57,8 +60,10 @@ async function getSongs(folder) {
     return songs;
 }
 
+// Function to play music
 const playMusic = (track, pause = false) => {
-    currentSong.src = (`/${currFolder}/` + track);
+    let src = blobUrls[track] || (`/${currFolder}/` + track);
+    currentSong.src = src;
     if (!pause) {
         currentSong.play();
         play.src = "img/pause.svg";
@@ -67,6 +72,7 @@ const playMusic = (track, pause = false) => {
     document.querySelector(".songtime").innerHTML = "00:00/00:00";
 };
 
+// Function to display albums
 async function displayAlbums() {
     console.log("displaying albums");
     let response = await fetch(`/songs/`);
@@ -107,6 +113,7 @@ async function displayAlbums() {
     });
 }
 
+// Function to normalize a string for searching
 function normalizeString(str) {
     // Convert to lowercase
     let normalized = str.toLowerCase();
@@ -115,6 +122,7 @@ function normalizeString(str) {
     return normalized;
 }
 
+// Function to search for a song
 function searchSong(query) {
     // Normalize the search query
     const normalizedQuery = normalizeString(query);
@@ -135,6 +143,7 @@ function searchSong(query) {
     }
 }
 
+// Main function to initialize the app
 async function main() {
     // Get the list of all songs
     await getSongs("songs/ncs");
@@ -227,6 +236,49 @@ async function main() {
     // Add event listener for search option in the sidebar
     document.getElementById("searchOption").addEventListener("click", () => {
         document.querySelector(".search").focus();
+    });
+
+    // Add event listener for the plus icon to upload MP3
+    document.querySelector(".heading img[src='img/plus.svg']").addEventListener("click", () => {
+        document.getElementById("fileInput").click();
+    });
+
+    // Handle file input change
+    document.getElementById("fileInput").addEventListener("change", async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Check if the file is an MP3
+        if (!file.type.includes("audio/mpeg") && !file.type.includes("audio/mp3")) {
+            alert("Only MP3 files are allowed.");
+            return;
+        }
+
+        // Create a Blob URL for the file
+        const blobUrl = URL.createObjectURL(file);
+        const songName = file.name;
+
+        // Add song to the playlist and blobUrls
+        blobUrls[songName] = blobUrl;
+
+        // Update the playlist with the new song
+        const songList = document.querySelector(".songList ul");
+        songList.innerHTML += `
+            <li>
+                <img class="invert" width="34" src="img/music.svg" alt="">
+                <div class="info">
+                    <div>${songName.replaceAll("%20", " ")}</div>
+                </div>
+                <div class="playnow">
+                    <span>Play Now</span>
+                    <img class="invert" src="img/play.svg" alt="">
+                </div>
+            </li>`;
+
+        // Attach an event listener to the new song
+        songList.lastElementChild.addEventListener("click", () => {
+            playMusic(songName);
+        });
     });
 }
 
